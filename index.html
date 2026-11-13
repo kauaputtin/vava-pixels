@@ -136,7 +136,16 @@
   .lb-x{font-family:Anton;font-size:22px;padding:4px 10px}
   .lb-x:hover{color:var(--red)}
   .lb-stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:16px 70px}
-  .lb-stage img{max-width:100%;max-height:100%;object-fit:contain}
+  .lb-media{position:relative;display:inline-block;max-width:100%;max-height:100%}
+  .lb-media > img{display:block;max-width:100%;max-height:calc(100vh - 110px);object-fit:contain}
+  .inset{position:absolute;top:12px;right:12px;width:30%;max-width:260px;border:3px solid var(--red);background:#000;box-shadow:0 8px 24px rgba(0,0,0,.55);display:block;z-index:2}
+  .inset img{display:block;width:100%!important;height:auto;max-height:none!important}
+  .inset em{position:absolute;left:0;top:0;background:var(--red);color:#fff;font-style:normal;font-family:"Barlow Condensed";font-weight:700;letter-spacing:.14em;font-size:11px;text-transform:uppercase;padding:3px 7px}
+  .vid{background:#000;width:100%}
+  .vid video{display:block;width:100%;max-height:560px;background:#000}
+  .jump{display:inline-flex;align-items:center;gap:6px;margin-top:8px;margin-left:10px;font-family:"Barlow Condensed";font-weight:700;letter-spacing:.14em;font-size:12px;text-transform:uppercase;color:var(--navy);background:var(--teal);padding:3px 8px}
+  .jump svg{width:12px;height:12px}
+  .step-role.vid-role{background:var(--bone);color:var(--navy)}
   .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:64px;background:var(--panel);font-family:Anton;font-size:24px;border:1px solid var(--line)}
   .lb-nav:hover{background:var(--red)}
   .lb-prev{left:12px}.lb-next{right:12px}
@@ -159,7 +168,7 @@
 <header>
   <div class="wrap bar">
     <div class="logo" id="home"><div class="logo-mark"><i></i></div><div class="logo-txt">VAVA <b>PIXELS</b></div></div>
-    <div class="bar-meta">Agente <span>Brimstone</span> &nbsp;/&nbsp; Mapa <span>Bind</span></div>
+    <div class="bar-meta" id="barMeta"></div>
   </div>
 </header>
 
@@ -167,24 +176,18 @@
   <!-- LISTA -->
   <section id="list">
     <div class="hero">
-      <div class="kicker">Lineups · Incendiário (Q)</div>
-      <h1>Pixels do <em>Brimstone</em><br>na Bind</h1>
-      <p>Escolha o lado, o bomb e o plant. Cada lineup mostra o passo a passo: onde ficar, onde mirar e onde o molly cai.</p>
+      <div class="kicker" id="kicker"></div>
+      <h1 id="heroTitle"></h1>
+      <p>Escolha o lado, o bomb e o plant. Cada lineup mostra o passo a passo: onde ficar, onde mirar e onde a habilidade cai.</p>
 
       <div class="selectors">
         <div class="sel">
           <div class="sel-lbl">Agente</div>
-          <div class="chips">
-            <button class="chip on"><span class="dot"></span>Brimstone</button>
-            <span class="chip soon">+ agentes em breve</span>
-          </div>
+          <div class="chips" id="agentChips"></div>
         </div>
         <div class="sel">
           <div class="sel-lbl">Mapa</div>
-          <div class="chips">
-            <button class="chip on"><span class="dot"></span>Bind</button>
-            <span class="chip soon">+ mapas em breve</span>
-          </div>
+          <div class="chips" id="mapChips"></div>
         </div>
       </div>
     </div>
@@ -218,13 +221,14 @@
   <div class="lb-top"><div class="lb-title" id="lbTitle"></div><button class="lb-x" id="lbX">✕</button></div>
   <div class="lb-stage">
     <button class="lb-nav lb-prev" id="lbPrev">‹</button>
-    <img id="lbImg" alt="">
+    <div id="lbMedia" class="lb-media"></div>
     <button class="lb-nav lb-next" id="lbNext">›</button>
   </div>
 </div>
 
 <script>
 const ROLE = {
+  video:{label:"Vídeo", cls:"vid-role"},
   pos:{label:"Posição", cls:"pos"},
   ali:{label:"Alinhamento", cls:"pos"},
   mira:{label:"Mira", cls:""},
@@ -233,81 +237,129 @@ const ROLE = {
   res:{label:"Resultado", cls:"res"}
 };
 
+const AGENTS = {
+  brimstone:{ name:"Brimstone", util:"Incendiário (Q)", maps:{ bind:"Bind" } },
+  gekko:{ name:"Gekko", util:"Mosh Pit (C)", maps:{ summit:"Summit" } }
+};
+
 const LINEUPS = [
-  { id:"atk-a-padrao", side:"atk", site:"A", title:"Plant padrão",
+  /* ---------- BRIMSTONE · BIND ---------- */
+  { id:"atk-a-padrao", agent:"brimstone", map:"bind", side:"atk", site:"A", title:"Plant padrão",
     desc:"Molly no plant padrão do A, jogado do A Lobby.",
     steps:[
       {img:"atk-a-padrao-1", role:"mira", txt:"No A Lobby, coloque a mira no ponto marcado em azul e lance.", file:"Atk - Plant Padrao A"},
       {img:"atk-a-padrao-2", role:"res",  txt:"Onde o molly cai: plant padrão do A.", file:"Atk - Plant Padrao A 2"}
     ]},
-  { id:"atk-a-verde", side:"atk", site:"A", title:"Plant caixa verde",
+  { id:"atk-a-verde", agent:"brimstone", map:"bind", side:"atk", site:"A", title:"Plant caixa verde",
     desc:"Molly no plant da caixa verde do A.",
     steps:[
       {img:"atk-a-verde-1", role:"hud", txt:"Use o indicador de arremesso como referência: alinhe a parte marcada em azul com o ponto do cenário.", file:"Atk - Plant Caixa verde A 2"},
       {img:"atk-a-verde-2", role:"res", txt:"Onde o molly cai: plant da caixa verde.", file:"Atk - Plant Caixa verde A"}
     ]},
-  { id:"atk-b-teleporter", side:"atk", site:"B", title:"Plant padrão", from:"B Teleporter",
+  { id:"atk-b-teleporter", agent:"brimstone", map:"bind", side:"atk", site:"B", title:"Plant padrão", from:"B Teleporter",
     desc:"Molly no plant padrão do B, jogado do B Teleporter. Usa o HUD como referência.",
     steps:[
       {img:"atk-b-padrao-4", role:"mira", txt:"No B Teleporter, use o ícone de escudo/vida do HUD (marcado em azul) como referência e lance.", file:"Atk - Plant padrao B"},
       {img:"atk-b-padrao-3", role:"res",  txt:"Onde o molly cai: plant padrão do B.", file:"Atk - Plant padrao B 2"}
     ]},
-  { id:"atk-b-fountain", side:"atk", site:"B", title:"Plant padrão", from:"B Fountain",
+  { id:"atk-b-fountain", agent:"brimstone", map:"bind", side:"atk", site:"B", title:"Plant padrão", from:"B Fountain",
     desc:"Molly no plant padrão do B, jogado do B Fountain. Usa o HUD como referência.",
     steps:[
       {img:"atk-b-padrao-2", role:"mira", txt:"No B Fountain, alinhe o ícone da habilidade C do HUD (marcado em azul) com o ponto do cenário e lance.", file:"Atk - Bomb B - Padrao Plant"},
       {img:"atk-b-padrao-1", role:"res",  txt:"Onde o molly cai: plant padrão do B (em cima das caixas).", file:"Atk - Bomb B - Padrao Plant 2"}
     ]},
-  { id:"def-a-madeira", side:"def", site:"A", title:"Caixa de madeira",
+  { id:"def-a-madeira", agent:"brimstone", map:"bind", side:"def", site:"A", title:"Caixa de madeira",
     desc:"Molly lançado da base, para tirar players do cover.",
     steps:[
       {img:"def-a-madeira-1", role:"mira", txt:"No Defender Side Spawn, alinhe o indicador de arremesso com a marcação azul e lance.", file:"Def - Caixa madeira A"},
       {img:"def-a-madeira-2", role:"res",  txt:"Onde o molly cai: plant da caixa de madeira.", file:"Def - Caixa madeira A 2"}
     ]},
-  { id:"def-a-padrao", side:"def", site:"A", title:"Plant padrão", from:"Bomb B",
+  { id:"def-a-padrao", agent:"brimstone", map:"bind", side:"def", site:"A", title:"Plant padrão", from:"Bomb B",
     desc:"Molly no plant padrão do A, jogado do Bomb B.",
     steps:[
       {img:"def-a-padrao-1", role:"mira", txt:"Posicione a mira (centro da tela) na curva do cano, como no print.", file:"Def - Plant Padrao A"},
       {img:"def-a-padrao-2", role:"hud",  txt:"Detalhe do indicador de arremesso na hora de lançar.", file:"Def - Plant Padrao A 2"},
       {img:"def-a-madeira-3", role:"res", txt:"Onde o molly cai: plant padrão do A.", file:"Def - Caixa madeira A 3"}
     ]},
-  { id:"def-b-padrao", side:"def", site:"B", title:"Plant padrão", from:"Bomb A",
+  { id:"def-b-padrao", agent:"brimstone", map:"bind", side:"def", site:"B", title:"Plant padrão", from:"Bomb A", jump:true,
     desc:"Molly no plant padrão do B, jogado do Bomb A, com pulo.",
     steps:[
       {img:"def-b-padrao-1", role:"pos",  txt:"Vá até a caixa verde marcada em azul.", file:"Def - Plant padrao B 2"},
       {img:"def-b-padrao-2", role:"ali",  txt:"Encoste e deixe a mira na emenda do meio da caixa (linha azul).", file:"Def - Plant padrao B 3"},
       {img:"def-b-padrao-3", role:"pulo", txt:"Mire usando a referência marcada no HUD, pule e lance.", file:"Def - Plant padrao B 4"},
       {img:"def-b-padrao-4", role:"res",  txt:"Onde o molly cai: plant padrão do B.", file:"Def - Plant padrao B"}
+    ]},
+
+  /* ---------- GEKKO · SUMMIT ---------- */
+  { id:"gekko-atk-a-padrao", agent:"gekko", map:"summit", side:"atk", site:"A", title:"Plant padrão", from:"A Lobby", jump:true, marks:false,
+    desc:"Mosh Pit no plant padrão do A, jogado do A Lobby. Precisa pular pra lançar.",
+    steps:[
+      {video:"gekko-atk-a-padrao", poster:"gekko/atk-a-padrao-video", role:"video", txt:"Assista primeiro: o lineup completo, da posição até onde o Mosh Pit cai."},
+      {img:"gekko/atk-a-padrao-1", role:"pos", txt:"Vá até o A Lobby, como no print."},
+      {img:"gekko/atk-a-padrao-2", role:"ali", txt:"Fique nessa posição, olhando pra parede como no print."},
+      {img:"gekko/atk-a-padrao-3", zoom:"gekko/atk-a-padrao-zoom", role:"pulo", txt:"Olhe pra cima até a folha da planta ficar alinhada com o ícone do C no HUD, como no zoom (canto da imagem). Depois pule e lance: sem o pulo, o Mosh Pit não cai no lugar certo."},
+      {img:"gekko/atk-a-padrao-4", role:"res", txt:"Onde o Mosh Pit cai: plant padrão do A."}
     ]}
 ];
 
 const SIDE_NAME = {atk:"Ataque", def:"Defesa"};
-let state = {side:"atk", site:"all"};
+let state = {agent:"brimstone", map:"bind", side:"atk", site:"all"};
 try{ const s = JSON.parse(localStorage.getItem("vp-state")||"null"); if(s) state = {...state,...s}; }catch(e){}
+if(!AGENTS[state.agent]) state.agent = "brimstone";
+if(!AGENTS[state.agent].maps[state.map]) state.map = Object.keys(AGENTS[state.agent].maps)[0];
 const save = () => { try{ localStorage.setItem("vp-state", JSON.stringify(state)); }catch(e){} };
 
 const $ = s => document.querySelector(s);
 const src = n => `img/${n}.webp`;
+const agentName = () => AGENTS[state.agent].name;
+const mapName = () => AGENTS[state.agent].maps[state.map];
+const JUMP = `<span class="jump"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1 L10 6 H7.5 V11 H4.5 V6 H2 Z" fill="currentColor"/></svg>Precisa pular</span>`;
+
+function countLabel(l){
+  const v = l.steps.filter(s=>s.video).length, p = l.steps.length - v;
+  return (v ? `${v} vídeo + ` : "") + `${p} print${p===1?"":"s"}`;
+}
+
+function shotInner(s){
+  return `<img src="${src(s.img)}" alt="${ROLE[s.role].label}" loading="lazy">` +
+    (s.zoom ? `<span class="inset"><img src="${src(s.zoom)}" alt="Zoom da referência de mira"><em>Zoom</em></span>` : "");
+}
 
 function cardHTML(l){
-  const res = [...l.steps].reverse().find(s=>s.role==="res") || l.steps[0];
+  const res = [...l.steps].reverse().find(s=>s.role==="res" && s.img) || l.steps.find(s=>s.img);
   const roles = l.steps.map(s=>ROLE[s.role].label);
   return `<button class="card" data-id="${l.id}">
     <div class="thumb"><span class="tag ${l.side}">${SIDE_NAME[l.side]} · Bomb ${l.site}</span>
-      <span class="count">${l.steps.length} prints</span>
+      <span class="count">${countLabel(l)}</span>
       <img src="${src(res.img)}" alt="${l.title}" loading="lazy"></div>
-    <div class="card-body"><h3>${l.title}</h3>${l.from?`<div class="from">Do ${l.from}</div>`:""}<p>${l.desc}</p>
+    <div class="card-body"><h3>${l.title}</h3>${l.from?`<div class="from">Do ${l.from}</div>`:""}${l.jump?JUMP:""}<p>${l.desc}</p>
       <div class="steps-mini">${roles.map((r,i)=>`<span>${i+1}. ${r}</span>`).join("")}</div>
       <span class="arrow">→</span></div>
   </button>`;
 }
 
+function renderSelectors(){
+  $("#agentChips").innerHTML = Object.entries(AGENTS).map(([k,a]) =>
+    `<button class="chip${k===state.agent?" on":""}" data-agent="${k}"><span class="dot"></span>${a.name}</button>`).join("");
+  $("#mapChips").innerHTML = Object.entries(AGENTS[state.agent].maps).map(([k,m]) =>
+    `<button class="chip${k===state.map?" on":""}" data-map="${k}"><span class="dot"></span>${m}</button>`).join("");
+  document.querySelectorAll("#agentChips button").forEach(b=>b.onclick=()=>{
+    if(b.dataset.agent===state.agent) return;
+    state.agent = b.dataset.agent; state.map = Object.keys(AGENTS[state.agent].maps)[0]; save(); renderList();
+  });
+  document.querySelectorAll("#mapChips button").forEach(b=>b.onclick=()=>{ state.map=b.dataset.map; save(); renderList(); });
+  $("#barMeta").innerHTML = `Agente <span>${agentName()}</span> &nbsp;/&nbsp; Mapa <span>${mapName()}</span>`;
+  $("#kicker").textContent = `Lineups · ${AGENTS[state.agent].util}`;
+  $("#heroTitle").innerHTML = `Pixels do <em>${agentName()}</em><br>na ${mapName()}`;
+}
+
 function renderList(){
+  renderSelectors();
   document.querySelectorAll("#side button").forEach(b=>b.classList.toggle("on", b.dataset.side===state.side));
   document.querySelectorAll("#sites button").forEach(b=>b.classList.toggle("on", b.dataset.site===state.site));
   const sites = state.site==="all" ? ["A","B"] : [state.site];
   $("#blocks").innerHTML = sites.map(site=>{
-    const items = LINEUPS.filter(l=>l.side===state.side && l.site===site);
+    const items = LINEUPS.filter(l=>l.agent===state.agent && l.map===state.map && l.side===state.side && l.site===site);
     return `<div class="site-block">
       <div class="site-head"><div class="site-letter">${site}</div>
         <h2>Bomb ${site}<span>${SIDE_NAME[state.side]} · ${items.length} lineup${items.length===1?"":"s"}</span></h2><div class="rule"></div></div>
@@ -317,30 +369,33 @@ function renderList(){
   document.querySelectorAll(".card").forEach(c=>c.onclick=()=>{ location.hash = c.dataset.id; });
 }
 
-let current = null;
+let current = null, lbList = [];
 function renderDetail(l){
   current = l;
+  lbList = l.steps.map((s,i)=>i).filter(i=>l.steps[i].img);
   $("#detail").innerHTML = `
     <button class="back" id="back">← Voltar aos lineups</button>
-    <div class="crumbs">Brimstone / Bind / <b>${SIDE_NAME[l.side]}</b> / Bomb ${l.site}</div>
+    <div class="crumbs">${AGENTS[l.agent].name} / ${AGENTS[l.agent].maps[l.map]} / <b>${SIDE_NAME[l.side]}</b> / Bomb ${l.site}</div>
     <h1>${l.title} <em>${l.site}</em></h1>
-    ${l.from?`<div class="from" style="font-size:15px">Jogado do ${l.from}</div>`:""}
+    ${l.from?`<div class="from" style="font-size:15px">Jogado do ${l.from}</div>`:""}${l.jump?JUMP:""}
     <p class="lead">${l.desc}</p>
-    <div class="legend"><i></i> As marcações em azul nos prints mostram o ponto de referência.</div>
+    ${l.marks===false?"":`<div class="legend"><i></i> As marcações em azul nos prints mostram o ponto de referência.</div>`}
     <div class="steps">${l.steps.map((s,i)=>`
       <div class="step">
         <div>
           <div class="step-num">${String(i+1).padStart(2,"0")}</div>
           <span class="step-role ${ROLE[s.role].cls}">${ROLE[s.role].label}</span>
           <p class="step-txt">${s.txt}</p>
-          <p class="step-file">Arquivo: ${s.file}</p>
+          ${s.file?`<p class="step-file">Arquivo: ${s.file}</p>`:""}
         </div>
-        <button class="shot" data-i="${i}"><img src="${src(s.img)}" alt="${ROLE[s.role].label}" loading="lazy"><span class="zoom">Ampliar</span></button>
+        ${s.video
+          ? `<div class="vid"><video src="video/${s.video}.mp4" poster="${src(s.poster)}" controls playsinline muted loop preload="metadata"></video></div>`
+          : `<button class="shot" data-i="${i}">${shotInner(s)}<span class="zoom">Ampliar</span></button>`}
       </div>`).join("")}
     </div>
     ${l.note?`<div class="note">${l.note}</div>`:""}`;
   $("#back").onclick = () => { location.hash = SIDE_HASH(); };
-  document.querySelectorAll(".shot").forEach(b=>b.onclick=()=>openLB(+b.dataset.i));
+  document.querySelectorAll(".shot").forEach(b=>b.onclick=()=>openLB(lbList.indexOf(+b.dataset.i)));
 }
 const SIDE_HASH = () => state.side==="atk" ? "ataque" : "defesa";
 
@@ -351,7 +406,7 @@ function route(){
   const wasDetail = $("#detail").classList.contains("show");
   if(l){
     if(!wasDetail) listScroll = window.scrollY;
-    state.side = l.side; save();
+    state.side = l.side; state.agent = l.agent; state.map = l.map; save();
     $("#list").style.display="none"; $("#detail").classList.add("show"); renderDetail(l);
     window.scrollTo(0,0);
   } else {
@@ -368,11 +423,11 @@ let lbI = 0;
 function openLB(i){ lbI=i; showLB(); $("#lb").classList.add("show"); }
 function closeLB(){ $("#lb").classList.remove("show"); }
 function showLB(){
-  const s = current.steps[lbI];
-  $("#lbImg").src = src(s.img);
-  $("#lbTitle").innerHTML = `<b>${lbI+1}/${current.steps.length}</b> &nbsp;${ROLE[s.role].label} · ${current.title} ${current.site}`;
+  const s = current.steps[lbList[lbI]];
+  $("#lbMedia").innerHTML = shotInner(s);
+  $("#lbTitle").innerHTML = `<b>${lbI+1}/${lbList.length}</b> &nbsp;${ROLE[s.role].label} · ${current.title} ${current.site}`;
 }
-function step(d){ lbI = (lbI + d + current.steps.length) % current.steps.length; showLB(); }
+function step(d){ lbI = (lbI + d + lbList.length) % lbList.length; showLB(); }
 $("#lbX").onclick = closeLB;
 $("#lbPrev").onclick = () => step(-1);
 $("#lbNext").onclick = () => step(1);
