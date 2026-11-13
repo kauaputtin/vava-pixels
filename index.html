@@ -238,7 +238,7 @@ const ROLE = {
 };
 
 const AGENTS = {
-  brimstone:{ name:"Brimstone", util:"Incendiário (Q)", maps:{ bind:"Bind" } },
+  brimstone:{ name:"Brimstone", util:"Incendiário (Q)", maps:{ bind:"Bind", abyss:"Abyss" } },
   gekko:{ name:"Gekko", util:"Mosh Pit (C)", maps:{ summit:"Summit" } }
 };
 
@@ -288,6 +288,24 @@ const LINEUPS = [
       {img:"def-b-padrao-2", role:"ali",  txt:"Encoste e deixe a mira na emenda do meio da caixa (linha azul).", file:"Def - Plant padrao B 3"},
       {img:"def-b-padrao-3", role:"pulo", txt:"Mire usando a referência marcada no HUD, pule e lance.", file:"Def - Plant padrao B 4"},
       {img:"def-b-padrao-4", role:"res",  txt:"Onde o molly cai: plant padrão do B.", file:"Def - Plant padrao B"}
+    ]},
+
+  /* ---------- BRIMSTONE · ABYSS ---------- */
+  { id:"abyss-atk-a-padrao", agent:"brimstone", map:"abyss", side:"atk", site:"A", title:"Plant padrão", from:"A Lobby", marks:false,
+    desc:"Molly no plant padrão do A, jogado do A Lobby.",
+    steps:[
+      {video:"brim-abyss-atk-a-padrao", poster:"abyss/atk-a-padrao-video", role:"video", txt:"Assista primeiro: o lineup completo, da posição até onde o molly cai."},
+      {img:"abyss/atk-a-padrao-1", role:"pos", txt:"Vá até o A Lobby e fique como no print, com a mira perto do canto do muro, acima do marcador \"A Lobby\"."},
+      {img:"abyss/atk-a-padrao-2", zoom:"abyss/atk-a-padrao-zoom", role:"mira", txt:"Olhe pra cima até a luz da parede ficar encostada no lado esquerdo do indicador de arremesso, como no zoom (canto da imagem). Depois lance."},
+      {img:"abyss/atk-a-padrao-3", role:"res", txt:"Onde o molly cai: plant padrão do A."}
+    ]},
+  { id:"abyss-atk-b-padrao", agent:"brimstone", map:"abyss", side:"atk", site:"B", title:"Plant padrão", from:"B Lobby", marks:false,
+    desc:"Molly no plant padrão do B, jogado do B Lobby.",
+    steps:[
+      {video:"brim-abyss-atk-b-padrao", poster:"abyss/atk-b-padrao-video", role:"video", txt:"Assista primeiro: o lineup completo, da posição até onde o molly cai."},
+      {img:"abyss/atk-b-padrao-1", role:"pos", txt:"No B Lobby, coloque a mira na quina de trás da caixa, onde está o marcador \"B Lobby\"."},
+      {img:"abyss/atk-b-padrao-2", zoom:"abyss/atk-b-padrao-zoom", role:"mira", txt:"Olhe pra cima até a ponta da folha verde ficar logo abaixo e à direita do indicador de arremesso, como no zoom (canto da imagem). Depois lance."},
+      {img:"abyss/atk-b-padrao-3", role:"res", txt:"Onde o molly cai: plant padrão do B."}
     ]},
 
   /* ---------- GEKKO · SUMMIT ---------- */
