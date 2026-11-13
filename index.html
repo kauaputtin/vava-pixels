@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vava Pixels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#FF4655; --red-dk:#BD3944; --navy:#0F1923; --navy-2:#16222E; --panel:#1C2A37;
+    --line:rgba(236,232,225,.12); --bone:#ECE8E1; --muted:#8B978F; --teal:#2EE6C1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--navy);color:var(--bone);font-family:"Barlow",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;background:
+    radial-gradient(900px 500px at 85% -10%,rgba(255,70,85,.14),transparent 60%),
+    linear-gradient(180deg,#0F1923 0%,#0B131B 100%) fixed}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* top bar */
+  header{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;background:rgba(15,25,35,.88);backdrop-filter:blur(10px)}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:12px;cursor:pointer}
+  .logo-mark{width:30px;height:30px;background:var(--red);clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%);display:grid;place-items:center}
+  .logo-mark i{width:10px;height:10px;background:var(--navy);display:block}
+  .logo-txt{font-family:Anton,sans-serif;font-size:26px;letter-spacing:.04em;line-height:1}
+  .logo-txt b{color:var(--red);font-weight:400}
+  .bar-meta{font-family:"Barlow Condensed";font-weight:600;letter-spacing:.18em;font-size:13px;color:var(--muted);text-transform:uppercase}
+  .bar-meta span{color:var(--bone)}
+
+  /* hero */
+  .hero{padding:44px 0 26px;position:relative}
+  .kicker{font-family:"Barlow Condensed";font-weight:700;letter-spacing:.3em;font-size:12px;color:var(--red);text-transform:uppercase;display:flex;align-items:center;gap:10px}
+  .kicker::before{content:"";width:22px;height:2px;background:var(--red)}
+  h1{font-family:Anton,sans-serif;font-weight:400;font-size:clamp(46px,8vw,92px);line-height:.92;letter-spacing:.01em;text-transform:uppercase;margin-top:10px}
+  h1 em{font-style:normal;color:var(--red)}
+  .hero p{color:var(--muted);max-width:520px;margin-top:14px;font-size:16px;line-height:1.5}
+
+  /* selectors */
+  .selectors{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+  .sel{border:1px solid var(--line);background:var(--navy-2);padding:14px 16px}
+  .sel-lbl{font-family:"Barlow Condensed";font-weight:600;letter-spacing:.22em;font-size:11px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-family:"Barlow Condensed";font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:15px;padding:8px 14px;border:1px solid var(--line);display:flex;align-items:center;gap:8px}
+  .chip.on{background:var(--bone);color:var(--navy);border-color:var(--bone)}
+  .chip.on .dot{background:var(--red)}
+  .chip .dot{width:8px;height:8px;background:var(--muted);transform:rotate(45deg)}
+  .chip.soon{color:var(--muted);border-style:dashed;cursor:not-allowed;font-size:13px}
+
+  /* filters */
+  .filters{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:34px 0 18px;flex-wrap:wrap}
+  .side{display:flex;gap:0;border:1px solid var(--line)}
+  .side button{font-family:Anton;font-size:22px;letter-spacing:.06em;padding:12px 26px;text-transform:uppercase;color:var(--muted);position:relative;transition:color .15s,background .15s}
+  .side button:hover{color:var(--bone)}
+  .side button.on{color:var(--bone);background:var(--red)}
+  .side button + button{border-left:1px solid var(--line)}
+  .side button small{font-family:"Barlow Condensed";font-size:12px;letter-spacing:.15em;margin-left:8px;opacity:.75;vertical-align:middle}
+  .sites{display:flex;gap:6px;align-items:center}
+  .sites .sel-lbl{margin:0 8px 0 0}
+  .sites button{width:44px;height:40px;border:1px solid var(--line);font-family:Anton;font-size:18px;color:var(--muted)}
+  .sites button.wide{width:auto;padding:0 14px;font-family:"Barlow Condensed";font-weight:700;letter-spacing:.14em;font-size:13px}
+  .sites button.on{color:var(--navy);background:var(--bone);border-color:var(--bone)}
+
+  /* site sections */
+  #blocks{min-height:100vh}
+  .site-block{margin-bottom:36px}
+  .site-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .site-letter{font-family:Anton;font-size:42px;line-height:1;color:var(--red)}
+  .site-head h2{font-family:"Barlow Condensed";font-weight:700;letter-spacing:.2em;font-size:14px;text-transform:uppercase}
+  .site-head h2 span{display:block;color:var(--muted);font-weight:500;letter-spacing:.12em;font-size:12px;margin-top:2px}
+  .site-head .rule{flex:1;height:1px;background:var(--line)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .card{position:relative;text-align:left;background:var(--panel);border:1px solid var(--line);overflow:hidden;transition:transform .18s,border-color .18s;clip-path:polygon(0 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%)}
+  .card:hover{transform:translateY(-3px);border-color:rgba(255,70,85,.6)}
+  .card:hover .thumb img{transform:scale(1.05)}
+  .thumb{aspect-ratio:16/9;overflow:hidden;position:relative;background:#000}
+  .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+  .thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(15,25,35,.92))}
+  .tag{position:absolute;top:12px;left:12px;z-index:2;font-family:"Barlow Condensed";font-weight:700;letter-spacing:.16em;font-size:11px;text-transform:uppercase;padding:4px 8px;background:var(--navy);border-left:3px solid var(--red)}
+  .tag.def{border-left-color:var(--teal)}
+  .count{position:absolute;top:12px;right:12px;z-index:2;font-family:"Barlow Condensed";font-weight:600;font-size:12px;letter-spacing:.1em;background:rgba(15,25,35,.8);padding:4px 8px}
+  .card-body{padding:14px 16px 18px;position:relative}
+  .card-body h3{font-family:Anton;font-weight:400;font-size:26px;letter-spacing:.03em;text-transform:uppercase;line-height:1}
+  .from{display:inline-block;margin-top:8px;font-family:"Barlow Condensed";font-weight:700;letter-spacing:.16em;font-size:12px;text-transform:uppercase;color:var(--red)}
+  .card-body p{color:var(--muted);font-size:14px;margin-top:6px}
+  .steps-mini{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+  .steps-mini span{font-family:"Barlow Condensed";font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:3px 7px;border:1px solid var(--line);color:var(--bone)}
+  .arrow{position:absolute;right:20px;bottom:18px;font-family:Anton;color:var(--red);font-size:20px}
+  .empty{color:var(--muted);border:1px dashed var(--line);padding:28px;text-align:center;font-family:"Barlow Condensed";letter-spacing:.14em;text-transform:uppercase}
+
+  /* detail */
+  .detail{display:none;padding:30px 0 60px}
+  .detail.show{display:block}
+  .back{font-family:"Barlow Condensed";font-weight:700;letter-spacing:.2em;font-size:13px;text-transform:uppercase;color:var(--muted);display:inline-flex;gap:10px;align-items:center;padding:8px 0}
+  .back:hover{color:var(--red)}
+  .crumbs{font-family:"Barlow Condensed";font-weight:600;letter-spacing:.2em;font-size:13px;text-transform:uppercase;color:var(--muted);margin-top:18px}
+  .crumbs b{color:var(--red);font-weight:700}
+  .detail h1{font-size:clamp(40px,6vw,72px);margin-top:6px}
+  .detail .lead{color:var(--muted);margin-top:10px;max-width:640px;line-height:1.5}
+  .legend{display:flex;gap:10px;align-items:center;margin-top:16px;font-size:14px;color:var(--bone)}
+  .legend i{width:26px;height:14px;border:3px solid #1E6FE0;border-radius:50%}
+
+  .steps{margin-top:30px;display:flex;flex-direction:column;gap:22px}
+  .step{display:grid;grid-template-columns:220px 1fr;gap:22px;background:var(--navy-2);border:1px solid var(--line);padding:18px}
+  .step-num{font-family:Anton;font-size:56px;line-height:.9;color:transparent;-webkit-text-stroke:1px rgba(236,232,225,.35)}
+  .step-role{display:inline-block;margin-top:10px;font-family:"Barlow Condensed";font-weight:700;letter-spacing:.2em;font-size:13px;text-transform:uppercase;background:var(--red);color:#fff;padding:4px 10px}
+  .step-role.res{background:var(--teal);color:var(--navy)}
+  .step-role.pos{background:var(--bone);color:var(--navy)}
+  .step-txt{margin-top:12px;color:var(--bone);font-size:15px;line-height:1.5}
+  .step-file{margin-top:12px;font-size:12px;color:var(--muted);word-break:break-all}
+  .shot{background:#000;cursor:zoom-in;position:relative;overflow:hidden;display:block;width:100%}
+  .shot img{width:100%;display:block;max-height:560px;object-fit:contain}
+  .shot .zoom{position:absolute;right:10px;bottom:10px;font-family:"Barlow Condensed";font-weight:700;letter-spacing:.14em;font-size:11px;text-transform:uppercase;background:rgba(15,25,35,.85);padding:5px 9px;opacity:0;transition:opacity .2s}
+  .shot:hover .zoom{opacity:1}
+  .note{margin-top:22px;border-left:3px solid var(--red);background:rgba(255,70,85,.07);padding:12px 16px;color:var(--bone);font-size:14px}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;background:rgba(5,10,15,.96);z-index:50;display:none;flex-direction:column}
+  .lb.show{display:flex}
+  .lb-top{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line)}
+  .lb-title{font-family:"Barlow Condensed";font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:14px}
+  .lb-title b{color:var(--red)}
+  .lb-x{font-family:Anton;font-size:22px;padding:4px 10px}
+  .lb-x:hover{color:var(--red)}
+  .lb-stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:16px 70px}
+  .lb-stage img{max-width:100%;max-height:100%;object-fit:contain}
+  .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:64px;background:var(--panel);font-family:Anton;font-size:24px;border:1px solid var(--line)}
+  .lb-nav:hover{background:var(--red)}
+  .lb-prev{left:12px}.lb-next{right:12px}
+
+  footer{border-top:1px solid var(--line);margin-top:40px;padding:22px 0;color:var(--muted);font-size:12px;letter-spacing:.06em}
+
+  @media (max-width:760px){
+    .selectors{grid-template-columns:1fr}
+    .step{grid-template-columns:1fr}
+    .step-num{font-size:40px}
+    .side button{padding:10px 16px;font-size:18px}
+    .side button small{display:none}
+    .lb-stage{padding:10px}
+    .lb-nav{top:auto;bottom:14px;transform:none}
+    .bar-meta{display:none}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <div class="logo" id="home"><div class="logo-mark"><i></i></div><div class="logo-txt">VAVA <b>PIXELS</b></div></div>
+    <div class="bar-meta">Agente <span>Brimstone</span> &nbsp;/&nbsp; Mapa <span>Bind</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- LISTA -->
+  <section id="list">
+    <div class="hero">
+      <div class="kicker">Lineups · Incendiário (Q)</div>
+      <h1>Pixels do <em>Brimstone</em><br>na Bind</h1>
+      <p>Escolha o lado, o bomb e o plant. Cada lineup mostra o passo a passo: onde ficar, onde mirar e onde o molly cai.</p>
+
+      <div class="selectors">
+        <div class="sel">
+          <div class="sel-lbl">Agente</div>
+          <div class="chips">
+            <button class="chip on"><span class="dot"></span>Brimstone</button>
+            <span class="chip soon">+ agentes em breve</span>
+          </div>
+        </div>
+        <div class="sel">
+          <div class="sel-lbl">Mapa</div>
+          <div class="chips">
+            <button class="chip on"><span class="dot"></span>Bind</button>
+            <span class="chip soon">+ mapas em breve</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filters">
+      <div class="side" id="side">
+        <button data-side="atk" class="on">Ataque <small>pós-plant</small></button>
+        <button data-side="def">Defesa <small>retake</small></button>
+      </div>
+      <div class="sites" id="sites">
+        <span class="sel-lbl">Bomb</span>
+        <button data-site="all" class="wide on">Todos</button>
+        <button data-site="A">A</button>
+        <button data-site="B">B</button>
+      </div>
+    </div>
+
+    <div id="blocks"></div>
+  </section>
+
+  <!-- DETALHE -->
+  <section class="detail" id="detail"></section>
+
+  <footer>
+    <div>© <span id="year">2026</span> Vava Pixels · Created by <a href="https://github.com/kauaputtin" style="color:var(--red);text-decoration:none;font-weight:600">kauaputtin</a></div>
+    <div style="margin-top:6px;opacity:.7">Projeto feito por fã, sem afiliação com a Riot Games. VALORANT é marca da Riot Games, Inc.</div>
+  </footer>
+</main>
+
+<div class="lb" id="lb">
+  <div class="lb-top"><div class="lb-title" id="lbTitle"></div><button class="lb-x" id="lbX">✕</button></div>
+  <div class="lb-stage">
+    <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+    <img id="lbImg" alt="">
+    <button class="lb-nav lb-next" id="lbNext">›</button>
+  </div>
+</div>
+
+<script>
+const ROLE = {
+  pos:{label:"Posição", cls:"pos"},
+  ali:{label:"Alinhamento", cls:"pos"},
+  mira:{label:"Mira", cls:""},
+  pulo:{label:"Pulo + mira", cls:""},
+  hud:{label:"Detalhe da mira", cls:""},
+  res:{label:"Resultado", cls:"res"}
+};
+
+const LINEUPS = [
+  { id:"atk-a-padrao", side:"atk", site:"A", title:"Plant padrão",
+    desc:"Molly no plant padrão do A, jogado do A Lobby.",
+    steps:[
+      {img:"atk-a-padrao-1", role:"mira", txt:"No A Lobby, coloque a mira no ponto marcado em azul e lance.", file:"Atk - Plant Padrao A"},
+      {img:"atk-a-padrao-2", role:"res",  txt:"Onde o molly cai: plant padrão do A.", file:"Atk - Plant Padrao A 2"}
+    ]},
+  { id:"atk-a-verde", side:"atk", site:"A", title:"Plant caixa verde",
+    desc:"Molly no plant da caixa verde do A.",
+    steps:[
+      {img:"atk-a-verde-1", role:"hud", txt:"Use o indicador de arremesso como referência: alinhe a parte marcada em azul com o ponto do cenário.", file:"Atk - Plant Caixa verde A 2"},
+      {img:"atk-a-verde-2", role:"res", txt:"Onde o molly cai: plant da caixa verde.", file:"Atk - Plant Caixa verde A"}
+    ]},
+  { id:"atk-b-teleporter", side:"atk", site:"B", title:"Plant padrão", from:"B Teleporter",
+    desc:"Molly no plant padrão do B, jogado do B Teleporter. Usa o HUD como referência.",
+    steps:[
+      {img:"atk-b-padrao-4", role:"mira", txt:"No B Teleporter, use o ícone de escudo/vida do HUD (marcado em azul) como referência e lance.", file:"Atk - Plant padrao B"},
+      {img:"atk-b-padrao-3", role:"res",  txt:"Onde o molly cai: plant padrão do B.", file:"Atk - Plant padrao B 2"}
+    ]},
+  { id:"atk-b-fountain", side:"atk", site:"B", title:"Plant padrão", from:"B Fountain",
+    desc:"Molly no plant padrão do B, jogado do B Fountain. Usa o HUD como referência.",
+    steps:[
+      {img:"atk-b-padrao-2", role:"mira", txt:"No B Fountain, alinhe o ícone da habilidade C do HUD (marcado em azul) com o ponto do cenário e lance.", file:"Atk - Bomb B - Padrao Plant"},
+      {img:"atk-b-padrao-1", role:"res",  txt:"Onde o molly cai: plant padrão do B (em cima das caixas).", file:"Atk - Bomb B - Padrao Plant 2"}
+    ]},
+  { id:"def-a-madeira", side:"def", site:"A", title:"Plant caixa de madeira",
+    desc:"Molly no plant da caixa de madeira do A, jogado do spawn da defesa.",
+    steps:[
+      {img:"def-a-madeira-1", role:"mira", txt:"No Defender Side Spawn, alinhe o indicador de arremesso com a marcação azul e lance.", file:"Def - Caixa madeira A"},
+      {img:"def-a-madeira-3", role:"res",  txt:"Onde o molly cai: plant da caixa de madeira.", file:"Def - Caixa madeira A 3"}
+    ]},
+  { id:"def-a-padrao", side:"def", site:"A", title:"Plant padrão",
+    desc:"Molly no plant padrão do A.",
+    steps:[
+      {img:"def-a-padrao-1", role:"mira", txt:"Posicione a mira (centro da tela) na curva do cano, como no print.", file:"Def - Plant Padrao A"},
+      {img:"def-a-padrao-2", role:"hud",  txt:"Detalhe do indicador de arremesso na hora de lançar.", file:"Def - Plant Padrao A 2"},
+      {img:"def-a-madeira-2", role:"res", txt:"Onde o molly cai: plant padrão do A.", file:"Def - Caixa madeira A 2"}
+    ]},
+  { id:"def-b-padrao", side:"def", site:"B", title:"Plant padrão",
+    desc:"Molly no plant padrão do B, com pulo.",
+    steps:[
+      {img:"def-b-padrao-1", role:"pos",  txt:"Vá até a caixa verde marcada em azul.", file:"Def - Plant padrao B 2"},
+      {img:"def-b-padrao-2", role:"ali",  txt:"Encoste e deixe a mira na emenda do meio da caixa (linha azul).", file:"Def - Plant padrao B 3"},
+      {img:"def-b-padrao-3", role:"pulo", txt:"Mire usando a referência marcada no HUD, pule e lance.", file:"Def - Plant padrao B 4"},
+      {img:"def-b-padrao-4", role:"res",  txt:"Onde o molly cai: plant padrão do B.", file:"Def - Plant padrao B"}
+    ]}
+];
+
+const SIDE_NAME = {atk:"Ataque", def:"Defesa"};
+let state = {side:"atk", site:"all"};
+try{ const s = JSON.parse(localStorage.getItem("vp-state")||"null"); if(s) state = {...state,...s}; }catch(e){}
+const save = () => { try{ localStorage.setItem("vp-state", JSON.stringify(state)); }catch(e){} };
+
+const $ = s => document.querySelector(s);
+const src = n => `img/${n}.webp`;
+
+function cardHTML(l){
+  const res = [...l.steps].reverse().find(s=>s.role==="res") || l.steps[0];
+  const roles = l.steps.map(s=>ROLE[s.role].label);
+  return `<button class="card" data-id="${l.id}">
+    <div class="thumb"><span class="tag ${l.side}">${SIDE_NAME[l.side]} · Bomb ${l.site}</span>
+      <span class="count">${l.steps.length} prints</span>
+      <img src="${src(res.img)}" alt="${l.title}" loading="lazy"></div>
+    <div class="card-body"><h3>${l.title}</h3>${l.from?`<div class="from">Do ${l.from}</div>`:""}<p>${l.desc}</p>
+      <div class="steps-mini">${roles.map((r,i)=>`<span>${i+1}. ${r}</span>`).join("")}</div>
+      <span class="arrow">→</span></div>
+  </button>`;
+}
+
+function renderList(){
+  document.querySelectorAll("#side button").forEach(b=>b.classList.toggle("on", b.dataset.side===state.side));
+  document.querySelectorAll("#sites button").forEach(b=>b.classList.toggle("on", b.dataset.site===state.site));
+  const sites = state.site==="all" ? ["A","B"] : [state.site];
+  $("#blocks").innerHTML = sites.map(site=>{
+    const items = LINEUPS.filter(l=>l.side===state.side && l.site===site);
+    return `<div class="site-block">
+      <div class="site-head"><div class="site-letter">${site}</div>
+        <h2>Bomb ${site}<span>${SIDE_NAME[state.side]} · ${items.length} lineup${items.length===1?"":"s"}</span></h2><div class="rule"></div></div>
+      ${items.length ? `<div class="grid">${items.map(cardHTML).join("")}</div>` : `<div class="empty">Nenhum lineup aqui ainda</div>`}
+    </div>`;
+  }).join("");
+  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>{ location.hash = c.dataset.id; });
+}
+
+let current = null;
+function renderDetail(l){
+  current = l;
+  $("#detail").innerHTML = `
+    <button class="back" id="back">← Voltar aos lineups</button>
+    <div class="crumbs">Brimstone / Bind / <b>${SIDE_NAME[l.side]}</b> / Bomb ${l.site}</div>
+    <h1>${l.title} <em>${l.site}</em></h1>
+    ${l.from?`<div class="from" style="font-size:15px">Jogado do ${l.from}</div>`:""}
+    <p class="lead">${l.desc}</p>
+    <div class="legend"><i></i> As marcações em azul nos prints mostram o ponto de referência.</div>
+    <div class="steps">${l.steps.map((s,i)=>`
+      <div class="step">
+        <div>
+          <div class="step-num">${String(i+1).padStart(2,"0")}</div>
+          <span class="step-role ${ROLE[s.role].cls}">${ROLE[s.role].label}</span>
+          <p class="step-txt">${s.txt}</p>
+          <p class="step-file">Arquivo: ${s.file}</p>
+        </div>
+        <button class="shot" data-i="${i}"><img src="${src(s.img)}" alt="${ROLE[s.role].label}" loading="lazy"><span class="zoom">Ampliar</span></button>
+      </div>`).join("")}
+    </div>
+    ${l.note?`<div class="note">${l.note}</div>`:""}`;
+  $("#back").onclick = () => { location.hash = SIDE_HASH(); };
+  document.querySelectorAll(".shot").forEach(b=>b.onclick=()=>openLB(+b.dataset.i));
+}
+const SIDE_HASH = () => state.side==="atk" ? "ataque" : "defesa";
+
+function route(){
+  const h = location.hash.slice(1);
+  const l = LINEUPS.find(x=>x.id===h);
+  closeLB();
+  const wasDetail = $("#detail").classList.contains("show");
+  if(l){
+    if(!wasDetail) listScroll = window.scrollY;
+    state.side = l.side; save();
+    $("#list").style.display="none"; $("#detail").classList.add("show"); renderDetail(l);
+    window.scrollTo(0,0);
+  } else {
+    if(h==="ataque") state.side="atk";
+    if(h==="defesa") state.side="def";
+    $("#detail").classList.remove("show"); $("#list").style.display=""; renderList();
+    if(wasDetail) window.scrollTo(0, listScroll);
+  }
+}
+let listScroll = 0;
+
+/* lightbox */
+let lbI = 0;
+function openLB(i){ lbI=i; showLB(); $("#lb").classList.add("show"); }
+function closeLB(){ $("#lb").classList.remove("show"); }
+function showLB(){
+  const s = current.steps[lbI];
+  $("#lbImg").src = src(s.img);
+  $("#lbTitle").innerHTML = `<b>${lbI+1}/${current.steps.length}</b> &nbsp;${ROLE[s.role].label} · ${current.title} ${current.site}`;
+}
+function step(d){ lbI = (lbI + d + current.steps.length) % current.steps.length; showLB(); }
+$("#lbX").onclick = closeLB;
+$("#lbPrev").onclick = () => step(-1);
+$("#lbNext").onclick = () => step(1);
+$("#lb").addEventListener("click", e=>{ if(e.target.classList.contains("lb-stage")) closeLB(); });
+document.addEventListener("keydown", e=>{
+  if(!$("#lb").classList.contains("show")) return;
+  if(e.key==="Escape") closeLB();
+  if(e.key==="ArrowRight") step(1);
+  if(e.key==="ArrowLeft") step(-1);
+});
+
+document.querySelectorAll("#side button").forEach(b=>b.onclick=()=>{ state.side=b.dataset.side; save(); location.hash = SIDE_HASH(); if(location.hash.slice(1)===SIDE_HASH()) renderList(); });
+document.querySelectorAll("#sites button").forEach(b=>b.onclick=()=>{ state.site=b.dataset.site; save(); renderList(); });
+$("#home").onclick = () => { location.hash = SIDE_HASH(); };
+
+window.addEventListener("hashchange", route);
+route();
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
