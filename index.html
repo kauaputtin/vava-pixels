@@ -199,9 +199,7 @@
       </div>
       <div class="sites" id="sites">
         <span class="sel-lbl">Bomb</span>
-        <button data-site="all" class="wide on">Todos</button>
-        <button data-site="A">A</button>
-        <button data-site="B">B</button>
+        <span id="siteBtns" style="display:contents"></span>
       </div>
     </div>
 
@@ -363,6 +361,22 @@ const LINEUPS = [
       {img:"haven/atk-b-padrao-3", role:"res", txt:"Onde o molly cai: plant padrão do B."}
     ]},
 
+  { id:"haven-atk-c-fechado", agent:"brimstone", map:"haven", side:"atk", site:"C", title:"Plant fechado", from:"C Long", marks:false,
+    desc:"Molly no plant fechado do C (embaixo da caixa coberta), jogado do C Long.",
+    steps:[
+      {img:"haven/atk-c-fechado-1", role:"pos", txt:"No C Long, coloque a mira no canto onde o muro encontra a cerca, no marcador \"C Long\"."},
+      {img:"haven/atk-c-fechado-2", zoom:"haven/atk-c-fechado-zoom", role:"mira", txt:"Olhe pra cima até o pico da rocha ao fundo ficar bem atrás do ícone do Q (fogo) no HUD, como no zoom (canto da imagem). Depois lance."},
+      {img:"haven/atk-c-fechado-3", role:"res", txt:"Onde o molly cai: plant fechado do C."}
+    ]},
+
+  { id:"haven-atk-c-aberto", agent:"brimstone", map:"haven", side:"atk", site:"C", title:"Plant aberto", from:"C Long", marks:false,
+    desc:"Molly no plant aberto do C (ao lado da caixa coberta), jogado do C Long.",
+    steps:[
+      {img:"haven/atk-c-aberto-1", role:"pos", txt:"No C Long, coloque a mira na parede logo à direita do canto com as plantas, no marcador \"C Long\"."},
+      {img:"haven/atk-c-aberto-2", zoom:"haven/atk-c-aberto-zoom", role:"mira", txt:"Olhe pra cima até a ponta do poste com a corda ficar em cima do ícone do Q (fogo) no HUD, como no zoom (canto da imagem). Depois lance."},
+      {img:"haven/atk-c-aberto-3", role:"res", txt:"Onde o molly cai: plant aberto do C."}
+    ]},
+
   /* ---------- GEKKO · SUMMIT ---------- */
   { id:"gekko-atk-a-padrao", agent:"gekko", map:"summit", side:"atk", site:"A", title:"Plant padrão", from:"A Lobby", jump:true, marks:false,
     desc:"Mosh Pit no plant padrão do A, jogado do A Lobby. Precisa pular pra lançar.",
@@ -385,6 +399,7 @@ const LINEUPS = [
 ];
 
 const SIDE_NAME = {atk:"Ataque", def:"Defesa"};
+const MAP_SITES = { haven:["A","B","C"] };
 let state = {agent:"brimstone", map:"bind", side:"atk", site:"all"};
 try{ const s = JSON.parse(localStorage.getItem("vp-state")||"null"); if(s) state = {...state,...s}; }catch(e){}
 if(!AGENTS[state.agent]) state.agent = "brimstone";
@@ -438,8 +453,14 @@ function renderSelectors(){
 function renderList(){
   renderSelectors();
   document.querySelectorAll("#side button").forEach(b=>b.classList.toggle("on", b.dataset.side===state.side));
-  document.querySelectorAll("#sites button").forEach(b=>b.classList.toggle("on", b.dataset.site===state.site));
-  const sites = state.site==="all" ? ["A","B"] : [state.site];
+  const mapSites = MAP_SITES[state.map] || ["A","B"];
+  if(state.site!=="all" && !mapSites.includes(state.site)) state.site = "all";
+  $("#siteBtns").innerHTML = `<button data-site="all" class="wide">Todos</button>` + mapSites.map(x=>`<button data-site="${x}">${x}</button>`).join("");
+  document.querySelectorAll("#sites button").forEach(b=>{
+    b.classList.toggle("on", b.dataset.site===state.site);
+    b.onclick=()=>{ state.site=b.dataset.site; save(); renderList(); };
+  });
+  const sites = state.site==="all" ? mapSites : [state.site];
   $("#blocks").innerHTML = sites.map(site=>{
     const items = LINEUPS.filter(l=>l.agent===state.agent && l.map===state.map && l.side===state.side && l.site===site);
     return `<div class="site-block">
@@ -522,7 +543,6 @@ document.addEventListener("keydown", e=>{
 });
 
 document.querySelectorAll("#side button").forEach(b=>b.onclick=()=>{ state.side=b.dataset.side; save(); location.hash = SIDE_HASH(); if(location.hash.slice(1)===SIDE_HASH()) renderList(); });
-document.querySelectorAll("#sites button").forEach(b=>b.onclick=()=>{ state.site=b.dataset.site; save(); renderList(); });
 $("#home").onclick = () => { location.hash = SIDE_HASH(); };
 
 window.addEventListener("hashchange", route);
