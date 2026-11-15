@@ -331,6 +331,21 @@ const LINEUPS = [
       {img:"corrode/atk-a-tr-padrao-3", role:"res", txt:"Onde o molly cai: plant padrão do A."}
     ]},
 
+  { id:"corrode-atk-b-fechado", agent:"brimstone", map:"corrode", side:"atk", site:"B", title:"Plant fechado", from:"B Lobby", marks:false,
+    desc:"Molly no plant fechado do B (embaixo da cobertura), jogado do B Lobby.",
+    steps:[
+      {img:"corrode/atk-b-fechado-1", role:"pos", txt:"No B Lobby, coloque a mira no tronco da árvore encostado na parede, onde está o marcador \"B Lobby\"."},
+      {img:"corrode/atk-b-fechado-2", zoom:"corrode/atk-b-fechado-zoom", role:"mira", txt:"Olhe pra cima até as folhas da árvore encostarem no ícone do C no HUD, como no zoom (canto da imagem). Depois lance."},
+      {img:"corrode/atk-b-fechado-3", role:"res", txt:"Onde o molly cai: plant fechado do B, embaixo da cobertura."}
+    ]},
+  { id:"corrode-atk-b-aberto", agent:"brimstone", map:"corrode", side:"atk", site:"B", title:"Plant aberto", from:"B Main", marks:false,
+    desc:"Molly no plant aberto do B (ao lado da cobertura), jogado do B Main.",
+    steps:[
+      {img:"corrode/atk-b-aberto-1", role:"pos", txt:"No B Main, coloque a mira no canto da parede, à esquerda da porta, onde está o marcador \"B Main\"."},
+      {img:"corrode/atk-b-aberto-2", zoom:"corrode/atk-b-aberto-zoom", role:"mira", txt:"Mire logo acima e à direita da ponta do telhado da janelinha do sótão, como no zoom (canto da imagem). Depois lance."},
+      {img:"corrode/atk-b-aberto-3", role:"res", txt:"Onde o molly cai: plant aberto do B, ao lado da cobertura."}
+    ]},
+
   /* ---------- GEKKO · SUMMIT ---------- */
   { id:"gekko-atk-a-padrao", agent:"gekko", map:"summit", side:"atk", site:"A", title:"Plant padrão", from:"A Lobby", jump:true, marks:false,
     desc:"Mosh Pit no plant padrão do A, jogado do A Lobby. Precisa pular pra lançar.",
