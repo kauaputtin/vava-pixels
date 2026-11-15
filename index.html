@@ -238,7 +238,7 @@ const ROLE = {
 };
 
 const AGENTS = {
-  brimstone:{ name:"Brimstone", util:"Incendiário (Q)", maps:{ bind:"Bind", abyss:"Abyss" } },
+  brimstone:{ name:"Brimstone", util:"Incendiário (Q)", maps:{ bind:"Bind", abyss:"Abyss", corrode:"Corrode" } },
   gekko:{ name:"Gekko", util:"Mosh Pit (C)", maps:{ summit:"Summit" } }
 };
 
@@ -308,6 +308,29 @@ const LINEUPS = [
       {img:"abyss/atk-b-padrao-3", role:"res", txt:"Onde o molly cai: plant padrão do B."}
     ]},
 
+  /* ---------- BRIMSTONE · CORRODE ---------- */
+  { id:"corrode-atk-a-pocket-padrao", agent:"brimstone", map:"corrode", side:"atk", site:"A", title:"Plant padrão", from:"A Pocket", marks:false,
+    desc:"Molly no plant padrão do A, jogado do A Pocket.",
+    steps:[
+      {img:"corrode/atk-a-pocket-padrao-1", role:"pos", txt:"No A Pocket, coloque a mira no canto da parede à direita da porta, onde está o marcador \"A Pocket\"."},
+      {img:"corrode/atk-a-pocket-padrao-2", zoom:"corrode/atk-a-pocket-padrao-zoom", role:"mira", txt:"Olhe pra cima até a ponta do cristal roxo ficar logo à direita do ícone do Q (fogo) no HUD, como no zoom (canto da imagem). Depois lance."},
+      {img:"corrode/atk-a-pocket-padrao-3", role:"res", txt:"Onde o molly cai: plant padrão do A."}
+    ]},
+  { id:"corrode-atk-a-ferro", agent:"brimstone", map:"corrode", side:"atk", site:"A", title:"Caixa de ferro", from:"A Pocket", marks:false,
+    desc:"Molly em volta da caixa de ferro do A (plant alternativo), jogado do A Pocket.",
+    steps:[
+      {img:"corrode/atk-a-ferro-1", role:"pos", txt:"No A Pocket, ao lado da caixa de madeira, deixe a mira na parede, onde está o marcador \"A Pocket\"."},
+      {img:"corrode/atk-a-ferro-2", zoom:"corrode/atk-a-ferro-zoom", role:"mira", txt:"Mire na borda de baixo, do lado direito, do buraco redondo na parede, como no zoom (canto da imagem). Depois lance."},
+      {img:"corrode/atk-a-ferro-3", role:"res", txt:"Onde o molly cai: em volta da caixa de ferro."}
+    ]},
+  { id:"corrode-atk-a-tr-padrao", agent:"brimstone", map:"corrode", side:"atk", site:"A", title:"Plant padrão", from:"Base TR", prep:"Da", marks:false,
+    desc:"Molly no plant padrão do A, jogado de perto da Base TR (A Lobby).",
+    steps:[
+      {img:"corrode/atk-a-tr-padrao-1", role:"pos", txt:"Perto da Base TR, no A Lobby, coloque a mira no canto entre a caixa de madeira e o portão, onde está o marcador \"A Lobby\"."},
+      {img:"corrode/atk-a-tr-padrao-2", zoom:"corrode/atk-a-tr-padrao-zoom", role:"mira", txt:"Olhe pra cima até o indicador de arremesso ficar entre as duas janelas em arco do prédio, como no zoom (canto da imagem). Depois lance."},
+      {img:"corrode/atk-a-tr-padrao-3", role:"res", txt:"Onde o molly cai: plant padrão do A."}
+    ]},
+
   /* ---------- GEKKO · SUMMIT ---------- */
   { id:"gekko-atk-a-padrao", agent:"gekko", map:"summit", side:"atk", site:"A", title:"Plant padrão", from:"A Lobby", jump:true, marks:false,
     desc:"Mosh Pit no plant padrão do A, jogado do A Lobby. Precisa pular pra lançar.",
@@ -359,7 +382,7 @@ function cardHTML(l){
     <div class="thumb"><span class="tag ${l.side}">${SIDE_NAME[l.side]} · Bomb ${l.site}</span>
       <span class="count">${countLabel(l)}</span>
       <img src="${src(res.img)}" alt="${l.title}" loading="lazy"></div>
-    <div class="card-body"><h3>${l.title}</h3>${l.from?`<div class="from">Do ${l.from}</div>`:""}${l.jump?JUMP:""}<p>${l.desc}</p>
+    <div class="card-body"><h3>${l.title}</h3>${l.from?`<div class="from">${l.prep||"Do"} ${l.from}</div>`:""}${l.jump?JUMP:""}<p>${l.desc}</p>
       <div class="steps-mini">${roles.map((r,i)=>`<span>${i+1}. ${r}</span>`).join("")}</div>
       <span class="arrow">→</span></div>
   </button>`;
@@ -404,7 +427,7 @@ function renderDetail(l){
     <button class="back" id="back">← Voltar aos lineups</button>
     <div class="crumbs">${AGENTS[l.agent].name} / ${AGENTS[l.agent].maps[l.map]} / <b>${SIDE_NAME[l.side]}</b> / Bomb ${l.site}</div>
     <h1>${l.title} <em>${l.site}</em></h1>
-    ${l.from?`<div class="from" style="font-size:15px">Jogado do ${l.from}</div>`:""}${l.jump?JUMP:""}
+    ${l.from?`<div class="from" style="font-size:15px">Jogado ${(l.prep||"Do").toLowerCase()} ${l.from}</div>`:""}${l.jump?JUMP:""}
     <p class="lead">${l.desc}</p>
     ${l.marks===false?"":`<div class="legend"><i></i> As marcações em azul nos prints mostram o ponto de referência.</div>`}
     <div class="steps">${l.steps.map((s,i)=>`
