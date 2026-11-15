@@ -238,7 +238,7 @@ const ROLE = {
 };
 
 const AGENTS = {
-  brimstone:{ name:"Brimstone", util:"Incendiário (Q)", maps:{ bind:"Bind", abyss:"Abyss", corrode:"Corrode" } },
+  brimstone:{ name:"Brimstone", util:"Incendiário (Q)", maps:{ bind:"Bind", abyss:"Abyss", corrode:"Corrode", haven:"Haven" } },
   gekko:{ name:"Gekko", util:"Mosh Pit (C)", maps:{ summit:"Summit" } }
 };
 
@@ -344,6 +344,15 @@ const LINEUPS = [
       {img:"corrode/atk-b-aberto-1", role:"pos", txt:"No B Main, coloque a mira no canto da parede, à esquerda da porta, onde está o marcador \"B Main\"."},
       {img:"corrode/atk-b-aberto-2", zoom:"corrode/atk-b-aberto-zoom", role:"mira", txt:"Mire logo acima e à direita da ponta do telhado da janelinha do sótão, como no zoom (canto da imagem). Depois lance."},
       {img:"corrode/atk-b-aberto-3", role:"res", txt:"Onde o molly cai: plant aberto do B, ao lado da cobertura."}
+    ]},
+
+  /* ---------- BRIMSTONE · HAVEN ---------- */
+  { id:"haven-atk-a-padrao", agent:"brimstone", map:"haven", side:"atk", site:"A", title:"Plant padrão", from:"A Long", marks:false,
+    desc:"Molly no plant padrão do A, jogado do A Long.",
+    steps:[
+      {img:"haven/atk-a-padrao-1", role:"pos", txt:"No A Long, coloque a mira no canto onde os sacos de areia encostam na cerca, no marcador \"A Long\"."},
+      {img:"haven/atk-a-padrao-2", zoom:"haven/atk-a-padrao-zoom", role:"mira", txt:"Olhe pra cima até o pico da rocha ao fundo ficar logo à direita do indicador de arremesso, como no zoom (canto da imagem). Depois lance."},
+      {img:"haven/atk-a-padrao-3", role:"res", txt:"Onde o molly cai: plant padrão do A."}
     ]},
 
   /* ---------- GEKKO · SUMMIT ---------- */
