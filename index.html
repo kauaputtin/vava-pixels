@@ -236,7 +236,7 @@ const ROLE = {
 };
 
 const AGENTS = {
-  brimstone:{ name:"Brimstone", util:"Incendiário (Q)", maps:{ bind:"Bind", abyss:"Abyss", corrode:"Corrode", haven:"Haven" } },
+  brimstone:{ name:"Brimstone", util:"Incendiário (Q)", maps:{ bind:"Bind", abyss:"Abyss", corrode:"Corrode", haven:"Haven", sunset:"Sunset" } },
   gekko:{ name:"Gekko", util:"Mosh Pit (C)", maps:{ summit:"Summit" } }
 };
 
@@ -375,6 +375,24 @@ const LINEUPS = [
       {img:"haven/atk-c-aberto-1", role:"pos", txt:"No C Long, coloque a mira na parede logo à direita do canto com as plantas, no marcador \"C Long\"."},
       {img:"haven/atk-c-aberto-2", zoom:"haven/atk-c-aberto-zoom", role:"mira", txt:"Olhe pra cima até a ponta do poste com a corda ficar em cima do ícone do Q (fogo) no HUD, como no zoom (canto da imagem). Depois lance."},
       {img:"haven/atk-c-aberto-3", role:"res", txt:"Onde o molly cai: plant aberto do C."}
+    ]},
+
+  /* ---------- BRIMSTONE · SUNSET ---------- */
+  { id:"sunset-atk-a-padrao", agent:"brimstone", map:"sunset", side:"atk", site:"A", title:"Plant padrão", from:"spawn do ataque", marks:false,
+    desc:"Molly no plant padrão do A, jogado do spawn do ataque, usando o varal de bandeirinhas como referência.",
+    steps:[
+      {img:"sunset/atk-a-padrao-1", role:"pos", txt:"No spawn do ataque, coloque a mira na borda direita da porta de vidro, no marcador \"Attacker Side Spawn\"."},
+      {img:"sunset/atk-a-padrao-2", role:"ali", txt:"Olhe pra cima e deixe a mira no ponto onde o varal de bandeirinhas encosta no telhado (onde a seta vermelha aponta)."},
+      {img:"sunset/atk-a-padrao-3", role:"mira", txt:"Continue subindo até o varal encostar no telhado logo à esquerda do ícone do C no HUD, como no print. Depois lance."},
+      {img:"sunset/atk-a-padrao-4", role:"res", txt:"Onde o molly cai: plant padrão do A, em cima da spike."}
+    ]},
+  { id:"sunset-atk-b-padrao", agent:"brimstone", map:"sunset", side:"atk", site:"B", title:"Plant padrão", marks:false,
+    desc:"Molly no plant padrão do B, usando a coluna cinza e o ícone do C como referência.",
+    steps:[
+      {img:"sunset/atk-b-padrao-1", role:"pos", txt:"Encoste nos vasos de flor e coloque a mira na parede de tijolos, entre a coluna e a caixa, na altura da sombra escura, como no print."},
+      {img:"sunset/atk-b-padrao-2", role:"ali", txt:"Olhe pra cima e deixe a mira na borda direita da coluna cinza, logo acima da saliência laranja (onde a mãozinha aponta)."},
+      {img:"sunset/atk-b-padrao-3", role:"mira", txt:"Continue subindo até a borda da coluna cinza passar bem no meio do ícone do C no HUD (quadrado vermelho). Depois lance."},
+      {img:"sunset/atk-b-padrao-4", role:"res", txt:"Onde o molly cai: plant padrão do B, em cima da spike."}
     ]},
 
   /* ---------- GEKKO · SUMMIT ---------- */
